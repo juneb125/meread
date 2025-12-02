@@ -26,6 +26,18 @@ fn main() -> io::Result<()> {
     let mut buffer: Vec<u8> = Default::default();
     man.render(&mut buffer)?;
 
+    // the use of $PROFILE isn't recommended, according to
+    // https://doc.rust-lang.org/cargo/reference/environment-variables.html#environment-variables-cargo-sets-for-crates
+    if option_env!("PROFILE") != Some("release") {
+        // local man page (./meread.1)
+        let local_man = {
+            let cwd = env::current_dir()?;
+            cwd.join("meread.1")
+        };
+        fs::write(local_man, &buffer)?;
+    }
+
+    // final man page
     fs::write(out_dir.join("meread.1"), buffer)?;
 
     Ok(())
