@@ -40,3 +40,7 @@ strip = true
 
 [profile.dev]
 debug = 0
+
+[build-dependencies]
+clap = "4.5.40"
+clap_mangen = "0.2.31"
